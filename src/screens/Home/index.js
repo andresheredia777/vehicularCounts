@@ -1,78 +1,124 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Table } from 'semantic-ui-react';
-
-import { getUsersSaga } from '../../actions';
-
+import { getConteosSaga, generateCsv } from '../../actions';
+import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
 import styles from './styles';
+
 
 class Home extends Component {
   constructor() {
     super();
-    this.handleBtnOnClick = this.handleBtnOnClick.bind(this);
+    this.state = {
+      conteo: undefined,
+      showingInfoWindow: false,
+      url: ''
+    }
   }
 
-  handleBtnOnClick() {
-    this.props.getUsersSaga();
+
+  componentDidMount() {
+    this.props.getConteosSaga();
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.url !== this.props.url) {
+      //DESCARGA L CSV
+      window.open(`${this.props.url}`, "_self")
+    }
+  }
+
+
+  onMarkerClick = (conteo) => {
+    this.setState({
+      showingInfoWindow: true,
+      conteo: conteo
+    });
+  }
+
+  onInfoWindowClose = () =>
+    this.setState({
+      showingInfoWindow: false
+    });
+
+  onMapClicked = () => {
+    this.setState({
+      showingInfoWindow: false
+    });
+  };
+  downloadCSV = () => {
+    this.props.generateCsv();
+    console.log("la URL DE LA DESCARGA", this.props.url)
+    ///window.open('https://csvcounts1.s3.us-west-2.amazonaws.com/conteosVehiculares.csv', "_self")
+  }
+
 
   render() {
-    const { users } = this.props;
+    const conteos = this.props.coordenadas.datos.Items;
     return (
-      <div style={styles.container}>
-        {users.length > 0
-          && (
-          <Table
-            striped
-          >
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Id</Table.HeaderCell>
-                <Table.HeaderCell>Name</Table.HeaderCell>
-                <Table.HeaderCell>Username</Table.HeaderCell>
-                <Table.HeaderCell>E-mail</Table.HeaderCell>
-                <Table.HeaderCell>Phone</Table.HeaderCell>
-                <Table.HeaderCell>Website</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {users.map(({
-                id,
-                name,
-                email,
-                phone,
-                username,
-                website
-              }, i) => (
-                <Table.Row key={i}>
-                  <Table.Cell>{id}</Table.Cell>
-                  <Table.Cell>{name}</Table.Cell>
-                  <Table.Cell>{username}</Table.Cell>
-                  <Table.Cell>{email}</Table.Cell>
-                  <Table.Cell>{phone}</Table.Cell>
-                  <Table.Cell>{website}</Table.Cell>
-                </Table.Row>))}
-            </Table.Body>
-          </Table>
-          )
-        }
-        <Button
-          color="teal"
-          onClick={this.handleBtnOnClick}
+      <div className="map-area" >
+
+        <Map
+          google={this.props.google}
+          zoom={9}
+          center={{
+            lat: -2.90055,
+            lng: -79.00453
+          }}
+          onClick={() => this.onMapClicked}
+          style={styles.mainContainer}
         >
-          Load Users
-        </Button>
+
+          <InfoWindow
+            position={{
+              lat: parseFloat(this.state.conteo ? this.state.conteo.coordenadas.latitud : null),
+              lng: parseFloat(this.state.conteo ? this.state.conteo.coordenadas.longitud : null)
+            }}
+            onClose={this.onInfoWindowClose}
+            visible={this.state.showingInfoWindow}>
+            <ul>
+              <li>Coches:  {this.state.conteo ? this.state.conteo.conteos.carros : '0'}</li>
+              <li>Motos-Bicicletas: {this.state.conteo ? this.state.conteo.conteos.motos : '0'}</li>
+              <li>Peatones: {this.state.conteo ? this.state.conteo.conteos.personas : '0'}</li>
+              <li>Camiones: {this.state.conteo ? this.state.conteo.conteos.camiones : '0'}</li>
+              <li>Autobúses: {this.state.conteo ? this.state.conteo.conteos.buses : '0'}</li>
+            </ul>
+          </InfoWindow>
+          {
+            conteos && (
+              conteos.map((conteo, indexConteo) => {
+                console.log("INFO DEL CONTEO", conteo)
+                return (
+                  <Marker key={indexConteo}
+                    position={{
+                      lat: conteo.coordenadas.latitud,
+                      lng: conteo.coordenadas.longitud
+                    }}
+                    onClick={() => this.onMarkerClick(conteo)}
+                  />
+                )
+              })
+            )
+          }
+          <button style={styles.button} onClick={this.downloadCSV}>Descargar Conteos</button>
+        </Map>
       </div>
-    );
+    )
   }
 }
 
+
 const mapStateToProps = state => ({
-  users: state.usersReducer.users
+  coordenadas: state.coordenadasUser,
+  url: state.coordenadasUser.url
 });
 
 const mapDispatchToProps = dispatch => ({
-  getUsersSaga: () => dispatch(getUsersSaga())
-});
+  getConteosSaga: () => dispatch(getConteosSaga()),
+  generateCsv: () => dispatch(generateCsv())
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+});
+export default GoogleApiWrapper({
+
+  apiKey: 'AIzaSyAEPePtpddOcmxCnouwgY4u7uRf6Wi5uc4' 
+
+})(connect(mapStateToProps, mapDispatchToProps)(Home));

@@ -8,9 +8,7 @@ import rootReducer from './reducers';
 import sagas from './sagas';
 
 export const history = createBrowserHistory();
-
 const sagaMiddleware = createSagaMiddleware();
-
 const initialState = {};
 const enhancers = [];
 const middleware = [

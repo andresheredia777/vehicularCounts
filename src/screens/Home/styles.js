@@ -1,9 +1,26 @@
 const styles = {
+  mainContainer:{
+    position:'relative',
+    width:'100%',
+    height:'100%'
+  },
   container: {
     marginLeft: 40,
     marginRight: 40,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  button: {
+    color:'#ffffff',
+    backgroundColor: '#364DE0', 
+    width: '17%',
+    borderRadius:'10px',
+    position:'absolute',
+    top:'90%',
+    left:'78%',
+    margin:'10px 5px 5px 10px',
+    padding:'5px 10px 5px 10px',
+    border: '1px solid #364DE0'
   }
 };
 
