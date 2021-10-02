@@ -120,6 +120,6 @@ const mapDispatchToProps = dispatch => ({
 export default GoogleApiWrapper({
 
 
-  apiKey: process.env.REACT_APP_GOOGLE_API_KEY 
+  apiKey: 'AIzaSyAEPePtpddOcmxCnouwgY4u7uRf6Wi5uc4'
 
 })(connect(mapStateToProps, mapDispatchToProps)(Home));
