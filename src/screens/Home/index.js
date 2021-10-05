@@ -47,13 +47,12 @@ class Home extends Component {
   };
   downloadCSV = () => {
     this.props.generateCsv();
-    console.log("la URL DE LA DESCARGA", this.props.url)
-    ///window.open('https://csvcounts1.s3.us-west-2.amazonaws.com/conteosVehiculares.csv', "_self")
   }
 
 
   render() {
     const conteos = this.props.coordenadas.datos.Items;
+    console.log("LA API KEY", process.env.REACT_APP_GOOGLE_API_KEY)
     return (
       <div className="map-area" >
         <Map
@@ -85,7 +84,6 @@ class Home extends Component {
           {
             conteos && (
               conteos.map((conteo, indexConteo) => {
-                console.log("INFO DEL CONTEO", conteo)
                 return (
                   <Marker key={indexConteo}
                     position={{
