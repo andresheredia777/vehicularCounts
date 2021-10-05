@@ -11,7 +11,6 @@ function* workerGetConteosSaga() {
 
 function* workerGenerateCsv() {
   const urlCsv = yield call(generateCsv);
-  console.log("workerGenerateCsv",urlCsv)
   yield put(setUrlCsv(urlCsv));
 }
 

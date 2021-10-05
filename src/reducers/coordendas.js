@@ -11,8 +11,6 @@ export default function setBrowserInfo(state = initialState, action) {
                 datos: action.data.conteos
             };
         case SET_URL:
-
-        console.log("------", action)
             return {
                 ...state,
                 url: 'https://csvcounts1.s3.us-west-2.amazonaws.com/conteosVehiculares.csv'

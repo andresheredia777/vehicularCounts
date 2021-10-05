@@ -14,12 +14,9 @@ class Home extends Component {
       url: ''
     }
   }
-
-
   componentDidMount() {
     this.props.getConteosSaga();
   }
-
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.url !== this.props.url) {
       //DESCARGA L CSV
@@ -52,7 +49,7 @@ class Home extends Component {
 
   render() {
     const conteos = this.props.coordenadas.datos.Items;
-    console.log("LA API KEY", process.env.REACT_APP_GOOGLE_API_KEY)
+    console.log("LA API KEY--", process.env.REACT_APP_GOOGLE_API_KEY)
     return (
       <div className="map-area" >
         <Map
