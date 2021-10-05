@@ -17,7 +17,7 @@ const styles = {
     width: '25%',
     borderRadius:'10px',
     position:'absolute',
-    top:'85%',
+    top:'90%',
     right:'12%',
     margin:'10px 5px 5px 10px',
     padding:'5px 15px 5px 15px',
