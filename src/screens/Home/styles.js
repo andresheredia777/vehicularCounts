@@ -11,15 +11,16 @@ const styles = {
     justifyContent: 'center'
   },
   button: {
+    textAlign:'center',
     color:'#ffffff',
     backgroundColor: '#364DE0', 
-    width: '17%',
+    width: '25%',
     borderRadius:'10px',
     position:'absolute',
-    top:'90%',
-    left:'78%',
+    top:'85%',
+    right:'12%',
     margin:'10px 5px 5px 10px',
-    padding:'5px 10px 5px 10px',
+    padding:'5px 15px 5px 15px',
     border: '1px solid #364DE0'
   }
 };

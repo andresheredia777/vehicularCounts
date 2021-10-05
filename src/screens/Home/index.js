@@ -56,7 +56,6 @@ class Home extends Component {
     const conteos = this.props.coordenadas.datos.Items;
     return (
       <div className="map-area" >
-
         <Map
           google={this.props.google}
           zoom={9}
@@ -99,8 +98,9 @@ class Home extends Component {
               })
             )
           }
-          <button style={styles.button} onClick={this.downloadCSV}>Descargar Conteos</button>
+         
         </Map>
+        <button style={styles.button} onClick={this.downloadCSV}>Conteos (Csv)</button>
       </div>
     )
   }
