@@ -16,6 +16,7 @@ class Home extends Component {
   }
   componentDidMount() {
     this.props.getConteosSaga();
+    window.document.title = 'Conteos Vehiculares';
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.url !== this.props.url) {

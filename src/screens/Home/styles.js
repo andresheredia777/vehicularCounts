@@ -14,7 +14,7 @@ const styles = {
     textAlign:'center',
     color:'#ffffff',
     backgroundColor: '#364DE0', 
-    width: '25%',
+    width: '20%',
     borderRadius:'10px',
     position:'absolute',
     top:'90%',
